@@ -1,6 +1,6 @@
 <div class="cell markdown">
 
-# Python with BOTO3 and OneFS Platform API for S3 Failover
+# Python with BOTO3 and OneFS Platform API for S3 self serviced access and failover
 
 </div>
 
@@ -135,7 +135,7 @@ mySecretKey = my.keys.secret_key
 
 **Note: There are other reasons why an S3 call could return a 403 Error.
 =\> This is for demonstraion purpose only\!** <br> It can be potentially
-dangerous to automatially get the keys and just retry with out further
+dangerous to automatially get the keys and just retry with out additional
 sanity checks.
 
 </div>
