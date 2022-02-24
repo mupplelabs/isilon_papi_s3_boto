@@ -1,0 +1,370 @@
+{
+	"info": {
+		"_postman_id": "9297c864-61e0-4c98-8f2d-8bb225b49d22",
+		"name": "Authenticate and getS3Key",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Papi Session Handling",
+			"item": [
+				{
+					"name": "Open PAPI Session (logon)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"xsrf-token\", decodeURIComponent(pm.cookies.get(\"isicsrf\")));\r",
+									"pm.collectionVariables.set(\"isi-token\", decodeURIComponent(pm.cookies.get(\"isisessid\")));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"root\",\r\n    \"password\": \"a\",\r\n    \"services\": [\"platform\",\"namespace\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://192.168.188.93:8080/session/1/session",
+							"protocol": "https",
+							"host": [
+								"192",
+								"168",
+								"188",
+								"93"
+							],
+							"port": "8080",
+							"path": [
+								"session",
+								"1",
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPAPI Session State",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{isi-host}}:8080/session/1/session",
+							"protocol": "https",
+							"host": [
+								"{{isi-host}}"
+							],
+							"port": "8080",
+							"path": [
+								"session",
+								"1",
+								"session"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete PAPI Session (logoff)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"xsrf-token\", \"\");\r",
+									"pm.collectionVariables.set(\"isi-token\", \"\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://{{isi-host}}:8080/session/1/session",
+							"protocol": "https",
+							"host": [
+								"{{isi-host}}"
+							],
+							"port": "8080",
+							"path": [
+								"session",
+								"1",
+								"session"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "S3 get my Key",
+			"item": [
+				{
+					"name": "list my S3 Key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.collectionVariables.set(\"S3_access_id\",  pm.response.json()[\"keys\"][\"access_id\"]);\r",
+									"pm.collectionVariables.set(\"S3_secret_key\", pm.response.json()[\"keys\"][\"secret_key\"]);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "https://{{isi-host}}:8080",
+								"type": "text"
+							},
+							{
+								"key": "X-CSRF-Token",
+								"value": "{{xsrf-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{isi-host}}:8080/platform/10/protocols/s3/mykeys",
+							"protocol": "https",
+							"host": [
+								"{{isi-host}}"
+							],
+							"port": "8080",
+							"path": [
+								"platform",
+								"10",
+								"protocols",
+								"s3",
+								"mykeys"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "S3 Create a new Key",
+			"item": [
+				{
+					"name": "create my S3 Key",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Origin",
+								"value": "https://{{isi-host}}:8080",
+								"type": "text"
+							},
+							{
+								"key": "X-CSRF-Token",
+								"value": "{{xsrf-token}}",
+								"type": "text"
+							},
+							{
+								"key": "Cookie",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://{{isi-host}}:8080/platform/10/protocols/s3/mykeys",
+							"protocol": "https",
+							"host": [
+								"{{isi-host}}"
+							],
+							"port": "8080",
+							"path": [
+								"platform",
+								"10",
+								"protocols",
+								"s3",
+								"mykeys"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Make an S3 Request",
+			"item": [
+				{
+					"name": "get Bucket list",
+					"protocolProfileBehavior": {
+						"disableCookies": true
+					},
+					"request": {
+						"auth": {
+							"type": "awsv4",
+							"awsv4": [
+								{
+									"key": "secretKey",
+									"value": "{{S3_secret_key}}",
+									"type": "string"
+								},
+								{
+									"key": "accessKey",
+									"value": "{{S3_access_id}}",
+									"type": "string"
+								},
+								{
+									"key": "addAuthDataToQuery",
+									"value": false,
+									"type": "boolean"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{isi-host}}:9021",
+							"protocol": "https",
+							"host": [
+								"{{isi-host}}"
+							],
+							"port": "9021"
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "isi-host",
+			"value": "192.168.188.93"
+		},
+		{
+			"key": "username",
+			"value": "root",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "a",
+			"type": "string"
+		},
+		{
+			"key": "xsrf-token",
+			"value": ""
+		},
+		{
+			"key": "isi-token",
+			"value": ""
+		},
+		{
+			"key": "S3_secret_key",
+			"value": ""
+		},
+		{
+			"key": "S3_access_id",
+			"value": ""
+		}
+	]
+}
